@@ -10,44 +10,56 @@ export const createListing = async (req, resp, next) => {
   }
 };
 
-export const deleteListing = async (req, resp, next) =>{
-  const listing = await Listing.findById(req.params.id)
+export const deleteListing = async (req, resp, next) => {
+  const listing = await Listing.findById(req.params.id);
 
-  if(!listing){
-    return next(errorHandler(404, 'Listing not found!'))
+  if (!listing) {
+    return next(errorHandler(404, "Listing not found!"));
   }
 
-  if(req.user.id !== listing.userRef){
-    return next(errorHandler(401, 'You can only delete your own listing!'))
+  if (req.user.id !== listing.userRef) {
+    return next(errorHandler(401, "You can only delete your own listing!"));
   }
 
   try {
-    await Listing.findByIdAndDelete(req.params.id)
-    resp.status(200).json('Listings has been deleted!')
+    await Listing.findByIdAndDelete(req.params.id);
+    resp.status(200).json("Listings has been deleted!");
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 export const updateListing = async (req, resp, next) => {
-  const listing = await Listing.findById(req.params.id)
+  const listing = await Listing.findById(req.params.id);
 
-  if(!listing){
-    return next(errorHandler(404, 'Listing not found!'))
+  if (!listing) {
+    return next(errorHandler(404, "Listing not found!"));
   }
 
-  if(req.user.id !== listing.userRef) {
-    return next(errorHandler(401, 'You can only update your own listing!'))
+  if (req.user.id !== listing.userRef) {
+    return next(errorHandler(401, "You can only update your own listing!"));
   }
 
   try {
     const updatedListing = await Listing.findByIdAndUpdate(
       req.params.id,
       req.body,
-      {new:true}
-    )
-    resp.status(200).json(updatedListing)
+      { new: true }
+    );
+    resp.status(200).json(updatedListing);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
+
+export const getListing = async (req, resp, next) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+      return next(errorHandler(404, "Listing not found!"));
+    }
+    resp.status(200).json(listing);
+  } catch (error) {
+    next(error);
+  }
+};
