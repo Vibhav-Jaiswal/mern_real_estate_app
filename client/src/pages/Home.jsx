@@ -80,7 +80,6 @@ const Home = () => {
                 style={{
                   background: `url(${listing.imageUrls[0]}) center no-repeat`,
                   backgroundSize: "cover", 
-                  height: '700px',
                 }}
                 className="h-[500px]"
               ></div>
